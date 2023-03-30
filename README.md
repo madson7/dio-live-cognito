@@ -1,4 +1,4 @@
-# Roteiro para o desenvolvimento da atividade prática do DIO Live Coding do dia 17/11/2021
+# Roteiro para o desenvolvimento da atividade prática
 
 ## Serviços AWS utilizados
 
@@ -8,6 +8,16 @@
 - AWS Lambda
 
 ## Etapas do desenvolvimento
+
+Clone o repositório do projeto no Github em sua máquina local usando o comando:
+```
+git clone https://github.com/madson7/dio-live-cognito.git
+```
+
+Entre no diretório do projeto usando o comando:
+```
+cd dio-live-cognito
+```
 
 ### Criando uma API REST no Amazon API Gateway
 
@@ -73,6 +83,56 @@
 - Name [CognitoAuth] -> Type - Cognito -> Cognito User Pool [pool criada anteriormente] -> Token Source [Authorization]
 
 - Resources -> selecionar o resource criado -> selecionar o método criado -> Method Request -> Authorization - Selecionar o autorizador criado
+
+### No POSTMAN
+
+- Add request -> Authorization
+- Type - OAuth 2.0
+- Callback URL [https://example.com/logout]
+- Auth URL [https://diolive.auth.sa-east-1.amazoncognito.com/login]
+- Client ID - obter o Client ID do Cognito em App clients
+- Scope [email - openid]
+- Client Authentication [Send client credentials in body]
+- Get New Acces Token
+- Copiar o token gerado
+
+- Selecionar a request para inserir item criada -> Authorization -> Type - Bearer Token -> Inserir o token copiado
+- Send
+
+### Usando Terraform
+
+- Para usar o arquivo put_item_function.js com o Terraform, você precisará primeiro empacotá-lo em um arquivo .zip que será carregado na função Lambda. Para fazer isso, basta executar o seguinte comando na pasta onde o arquivo put_item_function.js está localizado:
+
+```
+zip put_item_function.zip ./src/put_item_function.js
+```
+
+Execute o comando para inicializar o Terraform e baixar todas as dependências necessárias:
+```
+terraform init
+```
+
+Use o comando para ver as alterações que serão aplicadas na sua infraestrutura:
+```
+terraform plan
+```
+
+Use o comando para aplicar as alterações na sua infraestrutura:
+```
+terraform apply
+```
+
+### No POSTMAN
+
+- Add Request -> Method POST -> Copiar o endpoint gerado no API Gateway
+- Body -> Raw -> JSON -> Adicionar o seguinte body
+```
+{
+  "id": "003",
+  "price": 600
+}
+```
+- Send
 
 ### No POSTMAN
 
